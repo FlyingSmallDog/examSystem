@@ -1,0 +1,263 @@
+openapi: 3.0.0
+info:
+  title: 系统API文档
+  description: C语言在线测评系统接口设计文档
+  version: '0.1'
+  termsOfService: 'http://swagger.io/terms/'
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  - url: '127.0.0.1:8080/'
+    description: Development server
+
+tags:
+  - name: ExamSystem
+
+paths:
+  /class/{teacherRef}:
+    post:
+      tags:
+        - class
+      summary: 创建班级
+      operationId: createClassInfo
+      parameters:
+        - in: path
+          name: teacherRef
+          required: true
+          description: 老师Id
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateClassRequest'
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassDto'
+        '404':
+          description: 服务未找到
+          content:
+            application/json:
+              schema:
+                type: string
+                default: 服务未找到
+    get:
+      tags:
+        - class
+      summary: 获取班级列表
+      operationId: getClassList
+      parameters:
+        - in: path
+          name: teacherRef
+          required: true
+          description: 老师Id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClassDto'
+        '404':
+          description: 服务未找到
+          content:
+            application/json:
+              schema:
+                type: string
+                default: 服务未找到            
+    
+  /class/{teacherRef}/{id}:
+    patch:
+      tags:
+        - class
+      summary: 更新班级信息
+      operationId: updateTeacher
+      parameters:
+        - in: path
+          name: teacherRef
+          required: true
+          description: 老师Id
+          schema:
+            type: integer
+            format: int64
+        - in: path
+          name: id
+          required: true
+          description: 班级Id
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateClassRequest'
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassDto'
+        '404':
+          description: 服务未找到
+          content:
+            application/json:
+              schema:
+                type: string
+                default: 服务未找到
+    get:
+      tags:
+        - class
+      summary: 获取指定班级详情
+      operationId: getTeacherInfo
+      parameters:
+        - in: path
+          name: teacherRef
+          required: true
+          description: 老师id
+          schema:
+            type: integer
+            format: int64
+        - in: path
+          name: id
+          required: true
+          description: 班级Id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassDto'
+        '404':
+          description: 服务未找到
+          content:
+            application/json:
+              schema:
+                type: string
+                default: 服务未找到
+    delete:
+      tags: 
+        - class
+      summary: 删除指定班级
+      operationId: deleteClass
+      parameters:
+        - in: path
+          name: teacherRef
+          required: true
+          description: 老师Id
+          schema:
+            type: integer
+            format: int64
+        - in: path
+          name: id
+          required: true
+          description: 班级id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 操作成功
+        '404':
+          description: 服务未找到
+          content:
+            application/json:
+              schema:
+                type: string
+                default: 服务未找到
+                
+  /class/{teacherRef}/{id}/{studentRef}:
+    patch:
+      tags:
+        - c lass
+      summary: 更新班级学生
+      operationId: updateStudentsOfClass
+      parameters: 
+        - in: path
+          name: teacherRef
+          required: true
+          description: 老师id
+          schema:
+            type: integer
+            format: int64
+        - in: path
+          name: id
+          required: true
+          description: 班级id
+          schema:
+            type: integer
+            format: int64
+        - in: path
+          name: studentRef
+          required: true
+          description: 学生id
+          schema:
+            type: integer
+            format: int64
+        - in: query
+          name: operate
+          required: true
+          description: 操作[0:添加学生，1:删除学生]
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassDto'
+        '404':
+          description: 服务未找到
+          content:
+            application/json:
+              schema:
+                type: string
+                default: 服务未找到  
+ 
+components:
+  schemas:
+    ClassDto:
+      description: 班级详情
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 班级主键
+        className:
+          description: 班级名称
+          type: string
+        stuNumber:
+          description: 班级人数
+          type: integer
+          format: int32
+        
+    CreateClassRequest:
+      description: 创建班级详情对象
+      type: object
+      properties:
+        className:
+          description: 班级名称
+          type: string
+

@@ -1,0 +1,94 @@
+CREATE TABLE `C_Class` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `classname` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '班级名',
+  `headmaster` bigint(20) NOT NULL COMMENT '班主任Id',
+  `students` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '学生列表',
+  `stu_number` int(11) NOT NULL DEFAULT '0' COMMENT '学生数量',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='班级信息表';
+
+CREATE TABLE `Exam_Result` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `student_ref` bigint(20) NOT NULL COMMENT '学生id',
+  `paper_ref` bigint(20) NOT NULL COMMENT '试卷id',
+  `answers` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '答案列表',
+  `score` decimal(4,1) NOT NULL COMMENT '分数',
+  `start_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '考试开始日期',
+  `end_time` datetime NOT NULL COMMENT '考试结束日期',
+  `state` int(11) NOT NULL DEFAULT '1' COMMENT '状态',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='考试结果信息表';
+
+CREATE TABLE `Paper` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `teacher_ref` bigint(20) NOT NULL COMMENT '老师Id',
+  `paper_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '试卷名称',
+  `questions_ref` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '题目Id列表',
+  `students_ref` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '考生Id列表',
+  `total_score` decimal(4,1) NOT NULL DEFAULT '0.0' COMMENT '总分',
+  `appoint_questions` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '指定题目列表',
+  `type` bigint(20) NOT NULL COMMENT '类型Id',
+  `total_time` int(3) NOT NULL DEFAULT '0' COMMENT '考试时长',
+  `start_time` datetime DEFAULT NULL COMMENT '考试开始日期',
+  `end_time` datetime DEFAULT NULL COMMENT '考试结束日期',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='试卷信息表';
+
+CREATE TABLE `Paper_Type` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `describe` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '试卷类型描述',
+  `teacher_ref` bigint(20) NOT NULL COMMENT '创建人Id',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='试卷类型表';
+
+CREATE TABLE `Question` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `teacher_ref` bigint(20) NOT NULL COMMENT '老师Id',
+  `type_ref` bigint(20) NOT NULL COMMENT '类型Id',
+  `context_type_ref` bigint(20) NOT NULL COMMENT '内容类型Id',
+  `question_describe` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '问题描述',
+  `answer_describe` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '答案描述',
+  `score` decimal(3,1) NOT NULL COMMENT '分值',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='题目信息表';
+
+CREATE TABLE `Question_Context_Type` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `describe` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '类型描述',
+  `teache_ref` bigint(20) NOT NULL COMMENT '创建人Id',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='题目内容类型表';
+
+CREATE TABLE `Question_Type` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `describe` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '类型描述',
+  `teacher_ref` bigint(20) NOT NULL COMMENT '创建人Id',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='题目类型表';
+
+CREATE TABLE `Student` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `username` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户名',
+  `password` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '密码',
+  `real_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '真实姓名',
+  `information` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '联系方式',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='学生信息表';
+
+CREATE TABLE `Teacher` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `username` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户名',
+  `password` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '密码',
+  `real_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `information` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '联系方式',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='教师信息表';

@@ -1,0 +1,187 @@
+openapi: 3.0.0
+info:
+  title: 系统API文档
+  description: C语言在线测评系统接口设计文档
+  version: '0.1'
+  termsOfService: 'http://swagger.io/terms/'
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  - url: '127.0.0.1:8080/'
+    description: Development server
+
+tags:
+  - name: ExamSystem
+
+paths:
+  /student:
+    post:
+      tags:
+        - student
+      summary: 创建学生
+      operationId: createStudentInfo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStudentRequest'
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentDto'
+        '404':
+          description: 服务未找到
+          content:
+            application/json:
+              schema:
+                type: string
+                default: 服务未找到
+    get:
+      tags:
+        - student
+      summary: 获取学生列表
+      operationId: getStudentList
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StudentDto'
+        '404':
+          description: 服务未找到
+          content:
+            application/json:
+              schema:
+                type: string
+                default: 服务未找到
+  /student/{id}:
+    patch:
+      tags:
+        - student
+      summary: 更新学生信息
+      operationId: updateStudent
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 任务主键
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStudentRequest'
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentDto'
+        '404':
+          description: 服务未找到
+          content:
+            application/json:
+              schema:
+                type: string
+                default: 服务未找到
+    get:
+      tags:
+        - student
+      summary: 获取指定学生详情
+      operationId: getStudentInfo
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 学生id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentDto'
+        '404':
+          description: 服务未找到
+          content:
+            application/json:
+              schema:
+                type: string
+                default: 服务未找到
+    delete:
+      tags: 
+        - student
+      summary: 删除指定学生
+      operationId: deleteStudent
+      parameters: 
+        - in: path
+          name: id
+          required: true
+          description: 学生id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 操作成功
+
+        '404':
+          description: 服务未找到
+          content:
+            application/json:
+              schema:
+                type: string
+                default: 服务未找到
+ 
+components:
+  schemas:
+    StudentDto:
+      description: 学生详情
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 学生主键
+        studentName:
+          description: 学生名称
+          type: string
+        realName:
+          type: string
+          description: 真实姓名
+        studentTel:
+          description: 学生联系方式
+          type: string
+        
+    CreateStudentRequest:
+      description: 创建学生详情对象
+      type: object
+      properties:
+        studentName:
+          description: 学生名称
+          type: string
+        studentPassword:
+          description: 学生密码
+          type: string
+        realName:
+          description: 真是姓名
+          type: string
+        studentTel:
+          description: 学生联系方式
+          type: string
+
